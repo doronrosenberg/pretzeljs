@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Playground</title>
+    <script src="../dist/bundle.js" type="application/javascript"></script>
+    <script src="dist/playground.js" type="application/javascript"></script>
+</head>
+<body>
+  <button onclick="create()">Create Test Component</button> | <button onclick="destroy()">Destroy Test Component</button>
+  <div id="playground"></div>
+
+  <script>
+    let testComponent = null;
+    function create() {
+      if (testComponent == null) {
+        testComponent = new PretzelJSPlayGround.TestComponent();
+        PretzelJS.renderComponent(document.getElementById('playground'), testComponent);
+      }
+    }
+
+    function destroy() {
+      if (testComponent !== null) {
+        PretzelJS.destroyComponent(testComponent);
+        testComponent = null;
+      }
+    }
+  </script>
+</body>
+</html>

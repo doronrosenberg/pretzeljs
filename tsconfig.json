@@ -1,0 +1,17 @@
+{
+  "$schema": "https://json.schemastore.org/tsconfig",
+  "extends": "@tsconfig/node14/tsconfig.json",
+  "compilerOptions": {
+    "module": "ESNext",
+    "target": "es2015",
+    "lib": ["es2016", "dom", "es5"],
+    "paths": {
+      "PretzelJS": ["./dist/bundle.js"]
+    }
+  },
+  "include": [
+    "src/**/*",
+    "playground/src/**/*"
+  ],
+  "exclude": ["node_modules", "**/*.spec.ts"]
+}
