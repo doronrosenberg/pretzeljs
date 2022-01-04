@@ -5,26 +5,46 @@
     <title>Playground</title>
     <script src="../dist/bundle.js" type="application/javascript"></script>
     <script src="dist/playground.js" type="application/javascript"></script>
+    <link rel="stylesheet" href="playground.css" />
 </head>
 <body>
-  <button onclick="create()">Create Test Component</button> | <button onclick="destroy()">Destroy Test Component</button>
-  <div id="playground"></div>
+  <div id="main-container">
+    <div id="left-nav">
+      <div id="left-nav-title">Playground</div>
+      <div id="left-nav-content">
+        <button data-type="SimpleTestComponent">Simple Test Widget</button>
+      </div>
+    </div>
+    <div id="content">
+      <div id="playground"></div>
+    </div>
+  </div>
 
   <script>
-    let testComponent = null;
-    function create() {
-      if (testComponent == null) {
-        testComponent = new PretzelJSPlayGround.TestComponent();
-        PretzelJS.renderComponent(document.getElementById('playground'), testComponent);
-      }
-    }
+    let gCurrent = null;
 
-    function destroy() {
-      if (testComponent !== null) {
-        PretzelJS.destroyComponent(testComponent);
-        testComponent = null;
+    function loadPlayground(event) {
+      if (!event.target.hasAttribute("data-type")) {
+        return;
+      }
+
+      const type = event.target.getAttribute("data-type");
+
+      if (PretzelJSPlayGround[type]) {
+
+        if (gCurrent !== null) {
+          PretzelJS.destroyComponent(gCurrent);
+          gCurrent = null;
+        }
+
+        gCurrent = new PretzelJSPlayGround[type]();
+        PretzelJS.renderComponent(document.getElementById('playground'), gCurrent);
       }
     }
+  </script>
+
+  <script defer>
+    document.getElementById("left-nav-content").addEventListener("click", loadPlayground);
   </script>
 </body>
 </html>

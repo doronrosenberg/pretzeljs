@@ -20,10 +20,26 @@ export const ID_ATTRIBUTE = "data-pjs-id";
  */
 const componentHash: { [key: string]: Component } = {};
 
+class EventHandle {
+  domNode: HTMLElement;
+  type: String;
+  listener: Function;
+
+  constructor(domNode: HTMLElement, type: String, listener: Function) {
+    this.domNode = domNode;
+    this.type = type;
+    this.listener = listener;
+  }
+}
+
 export class Component {
   private id!: string;
   private domNode!: HTMLElement | null;
+  private eventHandles: Array<EventHandle> = [];
 
+  /**
+   * Returns the DOM structure to use for the component.  Called once when the component is being built.
+   */
   public render(): HTMLElement {
     throw new Error("render() method needs to be implemented.");
   }
@@ -54,6 +70,12 @@ export class Component {
       throw new Error("Component __cleanup called with unset domNode.");
     }
 
+    // cleanup any managed event listeners.
+    this.eventHandles.forEach((handle) => {
+      handle.domNode.removeEventListener(handle.type, handle.listener);
+    })
+    this.eventHandles = [];
+
     if (removeFromDOM) {
       if (!this.domNode.parentNode) {
         throw new Error("Component __cleanup called with parent-less domNode.");
@@ -71,6 +93,23 @@ export class Component {
 
   public getId(): String {
     return this.id;
+  }
+
+  // TODO: add support for addEventListener options/useCapture
+  /**
+   * Attaches an event listener to a DOM node owned by the component.  Will get cleaned up properly when the component
+   * is destroyed.
+   *
+   * Should only be called on nodes that are not manually removed from the DOM.
+   *
+   * @param node
+   * @param type
+   * @param listener
+   */
+  public attachListener(node: HTMLElement, type: String, listener: Function) {
+    node.addEventListener(type, listener);
+
+    this.eventHandles.push(new EventHandle(node, type, listener));
   }
 }
 
