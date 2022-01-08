@@ -22,10 +22,10 @@ const componentHash: { [key: string]: Component } = {};
 
 class EventHandle {
   domNode: HTMLElement;
-  type: String;
+  type: string;
   listener: Function;
 
-  constructor(domNode: HTMLElement, type: String, listener: Function) {
+  constructor(domNode: HTMLElement, type: string, listener: Function) {
     this.domNode = domNode;
     this.type = type;
     this.listener = listener;
@@ -91,7 +91,7 @@ export class Component {
     return this.domNode;
   }
 
-  public getId(): String {
+  public getId(): string {
     return this.id;
   }
 
@@ -106,10 +106,15 @@ export class Component {
    * @param type
    * @param listener
    */
-  public attachListener(node: HTMLElement, type: String, listener: Function) {
+  public attachListener(node: HTMLElement, type: string, listener: Function) {
     node.addEventListener(type, listener);
 
     this.eventHandles.push(new EventHandle(node, type, listener));
+  }
+
+  // Visible for testing
+  public __getEventHandleCount(): number {
+    return this.eventHandles.length;
   }
 }
 
