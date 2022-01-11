@@ -10,6 +10,7 @@
     "build-tsc": "tsc",
     "build-playground": "npx rollup -c rollup.config.js && npx rollup -c playground/rollup.playground.js",
     "build-playground-tsc": "tsc playground/src/*.ts --module amd --outfile playground/dist/playground.js",
+    "build-all": "npm run build && npm run build-playground",
     "test": "mocha"
   },
   "repository": {

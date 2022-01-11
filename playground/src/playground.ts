@@ -1,20 +1,16 @@
 import { Component, renderComponent, destroyComponent } from '../../src/index';
+import { VirtualListPlayground } from './components/VirtualList';
 
 class TestComponent extends Component {
   render() {
     const div = document.createElement("div");
-    div.innerText = "Container!";
-    const textDiv = document.createElement("div");
-    div.appendChild(textDiv);
-    const button = document.createElement("button");
-    button.textContent = "destroy";
-    div.appendChild(button);
+    div.innerText = "This is a simple component with some text.";
     return div;
   }
 }
 
 class SimpleTestComponent extends Component {
-  #component = null;
+  #component: Component | null = null;
 
   render() {
     const div = document.createElement("div");
@@ -56,6 +52,7 @@ class SimpleTestComponent extends Component {
 }
 
 export {
+  VirtualListPlayground,
   SimpleTestComponent,
   TestComponent
 }

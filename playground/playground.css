@@ -31,4 +31,30 @@ body {
 
 #content {
   flex-grow: 1;
+  padding: 2em;
+}
+
+.playgroundVirtualList {
+  margin-top: 10px;
+  width: 600px;
+  height: 400px;
+  border: 1px solid black;
+}
+
+.pjs-vl-viewport {
+  overflow: auto;
+  position: relative;
+}
+
+.pgs-vl-page {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  overflow: hidden;
+}
+
+.pgs-vl-page-row {
+  height: 60px;
+  overflow: hidden;
 }
