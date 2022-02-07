@@ -46,6 +46,13 @@ body {
   position: relative;
 }
 
+/* The container should not grow to the content's height */
+.pjs-vl-container {
+  position: absolute;
+  width: 100%;
+  overflow: hidden;
+}
+
 .pgs-vl-page {
   position: absolute;
   left: 0;

@@ -10,7 +10,7 @@ import { Component, renderComponent, destroyComponent } from '../../../src/index
 
 enum ScrollDirection {
   DOWN, UP
-};
+}
 
 class VirtualList extends Component {
   #viewport: HTMLElement | null = null;
@@ -39,7 +39,7 @@ class VirtualList extends Component {
     }
   }
 
-  public render() {
+  public render(): HTMLElement {
     this.#viewport = document.createElement("div");
     this.#viewport.classList.add("pjs-vl-viewport");
 
@@ -62,7 +62,7 @@ class VirtualList extends Component {
   private scrollUpdate() {
     this.#scrollTickRequested = false;
 
-    if ( this.#viewport == null) {
+    if (this.#viewport == null) {
       throw new Error("Attempted to process scroll event without a viewport.");
     }
 
@@ -74,6 +74,25 @@ class VirtualList extends Component {
 
     // positive - scrolled down, negative - scrolled up
     const velocity = newScrollYOffset - this.#scrollLastHandledYOffset;
+
+    if (Math.abs(velocity) > this.#pageHeight) {
+      // if we scrolled more than one page height, rebuild the pages
+      // TODO: this probably can be smarter, checking if the virtual pages are out of sync?
+      this.rebuildPages();
+    } else {
+      this.handleSmallScroll(velocity)
+    }
+
+    this.#scrollLastHandledYOffset = newScrollYOffset;
+  }
+
+  /**
+   * Handles a small scroll amount, where the user scrolled to an existing page.
+   *
+   * @param velocity
+   * @private
+   */
+  private handleSmallScroll(velocity: number) {
     if (velocity > 0) {
       // if we scrolled down, we process the top pages
       let done = false;
@@ -82,15 +101,23 @@ class VirtualList extends Component {
         done = !this.handlePageScroll(i++, ScrollDirection.DOWN);
       }
     } else {
-      // if we scrolled ip, we process the bottom pages
+      // if we scrolled up, we process the bottom pages
       let done = false;
       let i = this.#pageCount - 1;
       while (!done && i > 0) {
         done = !this.handlePageScroll(i--, ScrollDirection.UP);
       }
     }
+  }
 
-    this.#scrollLastHandledYOffset = newScrollYOffset;
+  private rebuildPages() {
+    // calculate where the pages should start from, assuming the user had scrolled normally
+    const start = Math.floor(this.#viewport.scrollTop / this.#pageHeight) * this.#pageHeight;
+
+    this.#pages.forEach((page, idx) => {
+      page.style.top = start + (idx * this.#pageHeight) + "px";
+      this.fillInPage(page);
+    });
   }
 
   /*
@@ -218,7 +245,7 @@ class VirtualList extends Component {
 class VirtualListPlayground extends Component {
   #component: Component | null = null;
 
-  render() {
+  public render() {
     const div = document.createElement("div");
 
     const controlDiv = document.createElement("div");
