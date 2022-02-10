@@ -1,5 +1,5 @@
 // the .js is needed because of ts-node/esm.  Need to find a better way to run these tests.
-import { Component, renderComponent, destroyComponent } from "../src/component.js";
+import { Component, renderComponent, destroyComponent } from "../src/component/component.js";
 import { expect } from "chai";
 import 'mocha';
 

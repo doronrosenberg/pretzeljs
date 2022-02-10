@@ -1,4 +1,5 @@
-import { Component, getComponentById, renderComponent, destroyComponent } from './component'
+import { Component } from './component/component'
+import { getComponentById, renderComponent, destroyComponent } from './component/lifecycle'
 
 export {
   Component,
