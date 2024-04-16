@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Playground</title>
+    <title>Pretzel JS Playground</title>
     <script src="../dist/bundle.js" type="application/javascript"></script>
     <script src="dist/playground.js" type="application/javascript"></script>
     <link rel="stylesheet" href="playground.css" />
@@ -32,7 +32,6 @@
       const type = event.target.getAttribute("data-type");
 
       if (PretzelJSPlayGround[type]) {
-
         if (gCurrent !== null) {
           PretzelJS.destroyComponent(gCurrent);
           gCurrent = null;
@@ -40,6 +39,12 @@
 
         gCurrent = new PretzelJSPlayGround[type]();
         PretzelJS.renderComponent(document.getElementById('playground'), gCurrent);
+
+        const currentUrl = new URL(window.location.href);
+        const path = currentUrl.pathname.split("/").slice(0, -1)
+        path.push(type);
+        currentUrl.pathname = path.join("/");
+        PretzelJS.Router.navigateTo(currentUrl.toString())
       }
     }
   </script>
