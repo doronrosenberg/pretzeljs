@@ -1,0 +1,30 @@
+{
+  "name": "@pretzeljs/pretzeljs",
+  "description": "",
+  "type": "module",
+  "files": [
+    "dist"
+  ],
+  "main": "./dist/pretzeljs.umd.cjs",
+  "module": "./dist/pretzeljs.js]",
+  "scripts": {
+    "build": "vite build",
+    "build-playground": "npx rollup -c rollup.config.js && npx rollup -c playground/rollup.playground.js",
+    "build-playground-tsc": "tsc playground/src/*.ts --module amd --outfile playground/dist/playground.js",
+    "build-all": "npm run build && npm run build-playground",
+    "test": "mocha"
+  },
+  "devDependencies": {
+    "@rollup/plugin-typescript": "^8.2.5",
+    "@types/chai": "^4.3.0",
+    "@types/jsdom": "^16.2.14",
+    "@types/mocha": "^10.0.6",
+    "@types/node": "^20.12.7",
+    "chai": "^4.3.4",
+    "jsdom": "^19.0.0",
+    "mocha": "^10.4.0",
+    "rollup": "^2.56.1",
+    "ts-node": "^10.9.2",
+    "vite": "^5.2.8"
+  }
+}

@@ -1,9 +1,9 @@
 // the .js is needed because of ts-node/esm.  Need to find a better way to run these tests.
-import { Component, renderComponent, destroyComponent } from "../src/component/component.js";
 import { expect } from "chai";
 import 'mocha';
+import * as jsdom from 'jsdom';
+import { Component, destroyComponent, renderComponent } from "../src";
 
-import jsdom from 'jsdom';
 const { JSDOM } = jsdom;
 const { document } = (new JSDOM('')).window;
 
