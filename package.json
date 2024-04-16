@@ -25,5 +25,9 @@
     "ui:build": "yarn workspace @pretzeljs/pretzeljs build",
     "ui:test": "yarn workspace @pretzeljs/pretzeljs test"
   },
-  "packageManager": "yarn@4.1.1"
+  "packageManager": "yarn@4.1.1",
+  "volta": {
+    "node": "20.12.2",
+    "yarn": "4.1.1"
+  }
 }
