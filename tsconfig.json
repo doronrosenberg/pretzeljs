@@ -7,11 +7,13 @@
     "paths": {
       "PretzelJS": ["./dist/bundle.js"]
     },
-    "moduleResolution": "node"
+    "moduleResolution": "node",
+    "emitDeclarationOnly": true,
+    "declaration": true
   },
   "include": [
     "packages/pretzeljs/src/**/*",
-    "playground/src/**/*"
+    "packages/playground/src/**/*"
   ],
   "exclude": ["node_modules"]
 }

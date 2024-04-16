@@ -1,6 +1,7 @@
 {
   "name": "@pretzeljs/pretzeljs",
   "description": "",
+  "version": "0.0.1",
   "type": "module",
   "files": [
     "dist"
@@ -15,7 +16,6 @@
     "test": "mocha"
   },
   "devDependencies": {
-    "@rollup/plugin-typescript": "^8.2.5",
     "@types/chai": "^4.3.0",
     "@types/jsdom": "^16.2.14",
     "@types/mocha": "^10.0.6",

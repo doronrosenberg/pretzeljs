@@ -1,4 +1,4 @@
-import { Component, renderComponent, destroyComponent } from '../../../packages/pretzeljs/src/index';
+import { Component, renderComponent, destroyComponent } from '@pretzeljs/pretzeljs';
 
 /**
  * Virtual list widget.

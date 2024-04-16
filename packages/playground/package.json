@@ -1,0 +1,9 @@
+{
+  "name": "@pretzeljs/playground",
+  "description": "",
+  "version": "0.0.1",
+  "type": "module",
+  "dependencies": {
+    "@pretzeljs/pretzeljs": "0.0.1"
+  }
+}

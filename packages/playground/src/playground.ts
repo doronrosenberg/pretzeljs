@@ -1,4 +1,4 @@
-import { Component, renderComponent, destroyComponent } from '../../src/index';
+import { Component, renderComponent, destroyComponent } from '../../pretzeljs/src';
 import { VirtualListPlayground } from './components/VirtualList';
 
 class TestComponent extends Component {

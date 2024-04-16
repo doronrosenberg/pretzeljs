@@ -1,6 +1,7 @@
 {
   "name": "@pretzeljs/monorepo",
   "description": "",
+  "version": "0.0.1",
   "private": true,
   "workspaces": [
     "packages/*"
@@ -18,5 +19,6 @@
   "homepage": "https://github.com/doronrosenberg/pretzeljs#readme",
   "devDependencies": {
     "typescript": "^5.4.5"
-  }
+  },
+  "packageManager": "yarn@4.1.1"
 }
