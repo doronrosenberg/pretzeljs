@@ -20,5 +20,10 @@
   "devDependencies": {
     "typescript": "^5.4.5"
   },
+  "scripts": {
+    "playground": "yarn workspace @pretzeljs/playground dev",
+    "ui:build": "yarn workspace @pretzeljs/pretzeljs build",
+    "ui:test": "yarn workspace @pretzeljs/pretzeljs test"
+  },
   "packageManager": "yarn@4.1.1"
 }

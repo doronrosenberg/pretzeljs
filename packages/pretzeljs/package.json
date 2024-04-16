@@ -9,11 +9,14 @@
   "main": "./dist/pretzeljs.umd.cjs",
   "module": "./dist/pretzeljs.js",
   "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/pretzeljs.js",
+      "require": "./dist/pretzeljs.umd.cjs"
+    }
+  },
   "scripts": {
     "build": "vite build",
-    "build-playground": "npx rollup -c rollup.config.js && npx rollup -c playground/rollup.playground.js",
-    "build-playground-tsc": "tsc playground/src/*.ts --module amd --outfile playground/dist/playground.js",
-    "build-all": "npm run build && npm run build-playground",
     "test": "mocha"
   },
   "devDependencies": {

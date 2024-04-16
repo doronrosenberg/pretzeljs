@@ -3,8 +3,9 @@
   "compilerOptions": {
     "module": "esnext",
     "target": "es2020",
-    "lib": ["es2022"],
-    "moduleResolution": "node"
+    "lib": ["es2020"],
+    "moduleResolution": "node",
+    "noEmit": true
   },
   "include": ["src"]
 }

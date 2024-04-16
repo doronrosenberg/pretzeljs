@@ -1,4 +1,4 @@
-import { Component, renderComponent, destroyComponent } from '@pretzeljs/pretzeljs';
+import { Component, renderComponent, destroyComponent, navigateTo } from '@pretzeljs/pretzeljs';
 import { VirtualListPlayground } from './components/VirtualList';
 
 class TestComponent extends Component {
@@ -73,11 +73,12 @@ function loadPlayground(event) {
     gCurrent = new PretzelJSPlayGround[type]();
     renderComponent(document.getElementById('playground'), gCurrent);
 
+    // TODO: ugly!
     const currentUrl = new URL(window.location.href);
     const path = currentUrl.pathname.split("/").slice(0, -1)
     path.push(type);
     currentUrl.pathname = path.join("/");
-    //PretzelJS.Router.navigateTo(currentUrl.toString())
+    navigateTo(currentUrl.toString())
   }
 }
 

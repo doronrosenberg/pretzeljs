@@ -7,7 +7,6 @@ export default defineConfig({
     lib: {
       entry: resolve(__dirname, "/src/index.ts"),
       name: "PretzelJS",
-      formats: ["es"],
       fileName: "pretzeljs"
     }
   },
