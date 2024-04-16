@@ -19,37 +19,5 @@
       <div id="playground"></div>
     </div>
   </div>
-
-  <script>
-    let gCurrent = null;
-
-    function loadPlayground(event) {
-      if (!event.target.hasAttribute("data-type")) {
-        return;
-      }
-
-      const type = event.target.getAttribute("data-type");
-
-      if (PretzelJSPlayGround[type]) {
-        if (gCurrent !== null) {
-          PretzelJS.destroyComponent(gCurrent);
-          gCurrent = null;
-        }
-
-        gCurrent = new PretzelJSPlayGround[type]();
-        PretzelJS.renderComponent(document.getElementById('playground'), gCurrent);
-
-        const currentUrl = new URL(window.location.href);
-        const path = currentUrl.pathname.split("/").slice(0, -1)
-        path.push(type);
-        currentUrl.pathname = path.join("/");
-        PretzelJS.Router.navigateTo(currentUrl.toString())
-      }
-    }
-  </script>
-
-  <script defer>
-    document.getElementById("left-nav-content").addEventListener("click", loadPlayground);
-  </script>
 </body>
 </html>

@@ -51,8 +51,34 @@ class SimpleTestComponent extends Component {
   }
 }
 
-export {
-  VirtualListPlayground,
-  SimpleTestComponent,
-  TestComponent
+const PretzelJSPlayGround = {
+  "SimpleTestComponent": SimpleTestComponent,
+  "VirtualListPlayground": VirtualListPlayground
 }
+let gCurrent = null;
+
+function loadPlayground(event) {
+  if (!event.target.hasAttribute("data-type")) {
+    return;
+  }
+
+  const type = event.target.getAttribute("data-type");
+
+  if (PretzelJSPlayGround[type]) {
+    if (gCurrent !== null) {
+      destroyComponent(gCurrent);
+      gCurrent = null;
+    }
+
+    gCurrent = new PretzelJSPlayGround[type]();
+    renderComponent(document.getElementById('playground'), gCurrent);
+
+    const currentUrl = new URL(window.location.href);
+    const path = currentUrl.pathname.split("/").slice(0, -1)
+    path.push(type);
+    currentUrl.pathname = path.join("/");
+    //PretzelJS.Router.navigateTo(currentUrl.toString())
+  }
+}
+
+document.getElementById("left-nav-content").addEventListener("click", loadPlayground);
