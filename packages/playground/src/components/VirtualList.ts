@@ -175,7 +175,11 @@ class VirtualList extends Component {
     const children = pageNode.children;
 
     for (let i = 0; i < children.length; i++) {
-      children.item(i).innerText = this.#data[startIndex + i];
+      const child = children.item(i);
+
+      if (child instanceof HTMLElement) {
+        child.innerText = this.#data[startIndex + i];
+      }
     }
   }
 
