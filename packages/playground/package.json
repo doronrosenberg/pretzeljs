@@ -11,6 +11,7 @@
     "@pretzeljs/pretzeljs": "0.0.1"
   },
   "devDependencies": {
+    "nano-jsx": "^0.1.0",
     "typescript": "^5.4.5",
     "vite": "^5.2.8"
   }

@@ -326,6 +326,7 @@ __metadata:
   resolution: "@pretzeljs/playground@workspace:packages/playground"
   dependencies:
     "@pretzeljs/pretzeljs": "npm:0.0.1"
+    nano-jsx: "npm:^0.1.0"
     typescript: "npm:^5.4.5"
     vite: "npm:^5.2.8"
   languageName: unknown
@@ -2228,6 +2229,13 @@ __metadata:
   version: 0.3.1
   resolution: "muggle-string@npm:0.3.1"
   checksum: 10c0/489b0575fa76e30914393915a36638590052409fca2206a6bef0fb0ad7b181c1cbf99761191bfd16fe402c6f5a3164897965422fa32ef20ada1b44024ba46ab6
+  languageName: node
+  linkType: hard
+
+"nano-jsx@npm:^0.1.0":
+  version: 0.1.0
+  resolution: "nano-jsx@npm:0.1.0"
+  checksum: 10c0/637b7d74f7076378c9be161d9b22b63c5b27cfbcbcc882eacb642cd2f77f02b149be16e4fc13cb96cc385e8dfce325719554f2218c0a9097b9729f879f7ecb04
   languageName: node
   linkType: hard
 
