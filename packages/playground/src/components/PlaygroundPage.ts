@@ -12,6 +12,7 @@ const PretzelJSPlayGround = {
 
 export class PlaygroundPage extends Component {
   #currentComponent: Component | null = null;
+  #content: HTMLDivElement | null = null;
   #select: HTMLSelectElement | null = null;
 
   onBuildClick(event: Event) {
@@ -20,8 +21,12 @@ export class PlaygroundPage extends Component {
       if (this.#currentComponent) {
         destroyComponent(this.#currentComponent);
       }
-      this.#currentComponent = new PretzelJSPlayGround[component]();
-      renderComponent(this.getNode()?.querySelector(".content"), this.#currentComponent);
+
+      if (this.#content) {
+        this.#currentComponent = new PretzelJSPlayGround[component]();
+        this.#content.innerHTML = "";
+        renderComponent(this.#content, this.#currentComponent);
+      }
     }
   }
 
@@ -29,15 +34,15 @@ export class PlaygroundPage extends Component {
     return jsx`
       <div class="container">
         <div class="controls">
-          <select ref="${(el) => this.#select = el}">
+          <select ref="${(el: HTMLSelectElement) => this.#select = el}">
             ${Object.keys(PretzelJSPlayGround).map((key) => {
               return jsx`<option value=${key}>${key}</option>`;
             })}
           </select>
-          <button onClick="${(e) => this.onBuildClick(e)}">Build</button>
+          <button onClick="${(e: Event) => this.onBuildClick(e)}">Build</button>
         </div>
-        <div class="content">
-          Select an component to render.
+        <div class="content" ref="${(el: HTMLDivElement) => this.#content = el}">
+          Select a component to render...
         </div>
       </div>  
     `;
