@@ -12,23 +12,6 @@ body {
   flex: 1;
 }
 
-.container {
-  display: flex;
-  flex: 1;
-  flex-direction: column;
-}
-
-.controls {
-  padding: 10px;
-  background-color: #f0f0f0;
-}
-
-.content {
-  flex: 1;
-  padding: 10px;
-}
-
-
 .playgroundVirtualList {
   margin-top: 10px;
   width: 600px;

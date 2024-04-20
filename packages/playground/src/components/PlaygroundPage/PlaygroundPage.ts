@@ -1,8 +1,9 @@
 import { Component, destroyComponent, renderComponent } from "@pretzeljs/pretzeljs";
 import { jsx } from "nano-jsx";
-import { JSXComponent } from "./JSXComponent";
-import { SimpleComponent } from "./SimpleComponent";
-import { VirtualListPlayground } from "./VirtualList";
+import { JSXComponent } from "../JSXComponent";
+import { SimpleComponent } from "../SimpleComponent";
+import { VirtualListPlayground } from "../VirtualList";
+import style from "./PlaygroundPage.module.css"
 
 const PretzelJSPlayGround = {
   "SimpleComponent": SimpleComponent,
@@ -32,8 +33,8 @@ export class PlaygroundPage extends Component {
 
   public render() {
     return jsx`
-      <div class="container">
-        <div class="controls">
+      <div class="${style.container}">
+        <div class="${style.controls}">
           <select ref="${(el: HTMLSelectElement) => this.#select = el}">
             ${Object.keys(PretzelJSPlayGround).map((key) => {
               return jsx`<option value=${key}>${key}</option>`;
@@ -41,7 +42,7 @@ export class PlaygroundPage extends Component {
           </select>
           <button onClick="${(e: Event) => this.onBuildClick(e)}">Build</button>
         </div>
-        <div class="content" ref="${(el: HTMLDivElement) => this.#content = el}">
+        <div class="${style.content}" ref="${(el: HTMLDivElement) => this.#content = el}">
           Select a component to render...
         </div>
       </div>  
