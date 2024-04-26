@@ -1,3 +1,4 @@
+import { generateId } from "../utils";
 import { Component } from "./component";
 
 export const ID_ATTRIBUTE = "data-pjs-id";

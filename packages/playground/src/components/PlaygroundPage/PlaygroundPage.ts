@@ -1,9 +1,9 @@
 import { Component, destroyComponent, renderComponent, ComponentHandle } from "@pretzeljs/pretzeljs";
 import { jsx } from "nano-jsx";
-import { FunctionComponent } from "./FunctionComponent";
-import { JSXComponent } from "./JSXComponent";
-import { SimpleComponent } from "./SimpleComponent";
-import { VirtualListPlayground } from "./VirtualList";
+import { FunctionComponent } from "../FunctionComponent";
+import { JSXComponent } from "../JSXComponent";
+import { SimpleComponent } from "../SimpleComponent";
+import { VirtualListPlayground } from "../VirtualList";
 import style from "./PlaygroundPage.module.css"
 
 const PretzelJSPlayGround = {
