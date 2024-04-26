@@ -2,7 +2,50 @@ import { Component } from "./component";
 
 export const ID_ATTRIBUTE = "data-pjs-id";
 
-type PRETZELJS_COMPONENT_TYPES = Component | (() => HTMLElement);
+type COMPONENT_TYPES = Component | (() => HTMLElement);
+
+enum ComponentType {
+  CLASS,
+  FUNCTION
+}
+
+export interface ComponentHandle {
+  getId(): string;
+  getType(): ComponentType;
+  getRef(): COMPONENT_TYPES;
+}
+
+class ClassComponentHandle implements ComponentHandle {
+  constructor(private id: string, private ref: Component) {}
+
+  getId() {
+    return this.id;
+  }
+
+  getType() {
+    return ComponentType.CLASS;
+  }
+
+  getRef() {
+    return this.ref;
+  }
+}
+
+class FunctionComponentHandle implements ComponentHandle {
+  constructor(private id: string, private ref: () => HTMLElement) {}
+
+  getId() {
+    return this.id;
+  }
+
+  getType() {
+    return ComponentType.FUNCTION;
+  }
+
+  getRef() {
+    return this.ref;
+  }
+}
 
 /*
   Having a global map of id:component is iffy since we can end up holding on to a component if it wasn't properly
@@ -11,25 +54,81 @@ type PRETZELJS_COMPONENT_TYPES = Component | (() => HTMLElement);
 
   TODO: figure out what is the best approach
  */
-const componentHash: { [key: string]: PRETZELJS_COMPONENT_TYPES } = {};
+const componentHash: { [key: string]: ComponentHandle } = {};
 
-export function getComponentById(id: string): PRETZELJS_COMPONENT_TYPES {
+export function getComponentById(id: string): ComponentHandle {
   return componentHash[id];
 }
 
-export function renderComponent(parentNode: HTMLElement, component: PRETZELJS_COMPONENT_TYPES) {
+export function renderComponent(parentNode: HTMLElement, component: COMPONENT_TYPES): ComponentHandle {
   if (component instanceof Component) {
     const node = component.render();
     component.__init(node);
     node.setAttribute(ID_ATTRIBUTE, component.getId());
 
-    componentHash[component.getId()] = component;
+    componentHash[component.getId()] = new ClassComponentHandle(component.getId(), component);
 
     parentNode.appendChild(node);
+
+    return componentHash[component.getId()];
+  }
+
+  if (component instanceof Function) {
+    const node = component();
+    parentNode.appendChild(node);
+
+    const id = generateId();
+    node.setAttribute(ID_ATTRIBUTE, id);
+
+    return new FunctionComponentHandle(id, component);
   }
 }
 
-export function destroyComponent(component: PRETZELJS_COMPONENT_TYPES) {
+function destroyClassComponent(handle: ClassComponentHandle) {
+  const component = handle.getRef();
+
+  const node = component.getNode();
+  if (!node) {
+    throw new Error("destroyComponent called on component with no domNode.");
+  }
+
+  const childComponents = node.querySelectorAll(`[${ID_ATTRIBUTE}]`);
+  childComponents.forEach((childNode) => {
+    const id = childNode.getAttribute(ID_ATTRIBUTE);
+
+    if (!id) {
+      throw new Error("Could not find id attribute on component.");
+    }
+
+    if (id == component.getId()) {
+      return;
+    }
+
+    // TODO: handle errors
+    const childComponent = getComponentById(id);
+    if (childComponent instanceof ClassComponentHandle) {
+      childComponent.getRef().destroy();
+      childComponent.getRef().__cleanup(false);
+    }
+  })
+
+  component.destroy();
+  component.__cleanup(true);
+}
+
+function destroyFunctionComponent(handle: FunctionComponentHandle) {
+  const id = handle.getId()
+
+  const node = document.querySelector(`[${ID_ATTRIBUTE}="${id}"]`);
+
+  if (!node) {
+    throw new Error(`Could not find node for function component ${id}.`);
+  }
+
+  node.parentNode?.removeChild(node);
+}
+
+export function destroyComponent(handle: ComponentHandle) {
   // get all child components
   const filter: NodeFilter = {
     acceptNode(node: Node): number {
@@ -41,35 +140,11 @@ export function destroyComponent(component: PRETZELJS_COMPONENT_TYPES) {
     }
   }
 
-  if (component instanceof Component) {
-    const node = component.getNode();
-    if (!node) {
-      throw new Error("destroyComponent called on component with no domNode.");
-    }
-
-    // TODO: handle nested components better?  Need to verify this works in that case
-    const childComponents = node.querySelectorAll(`[${ID_ATTRIBUTE}]`);
-    childComponents.forEach((childNode) => {
-      const id = childNode.getAttribute(ID_ATTRIBUTE);
-
-      if (!id) {
-        throw new Error("Could not find id attribute on component.");
-      }
-
-      if (id == component.getId()) {
-        return;
-      }
-
-      // TODO: handle errors
-      const childComponent = getComponentById(id);
-      if (childComponent instanceof Component) {
-        childComponent.destroy();
-        childComponent.__cleanup(false);
-      }
-    })
-
-    component.destroy();
-    component.__cleanup(true);
-    delete componentHash[component.getId()];
+  if (handle instanceof ClassComponentHandle) {
+    destroyClassComponent(handle);
+  } else if (handle instanceof FunctionComponentHandle) {
+    destroyFunctionComponent(handle);
   }
+
+  delete componentHash[handle.getId()];
 }

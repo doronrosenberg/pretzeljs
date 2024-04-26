@@ -1,4 +1,4 @@
-import { Component, renderComponent, destroyComponent } from '@pretzeljs/pretzeljs';
+import { Component, renderComponent, destroyComponent, ComponentHandle } from '@pretzeljs/pretzeljs';
 
 /**
  * Virtual list widget.
@@ -247,7 +247,7 @@ class VirtualList extends Component {
 }
 
 class VirtualListPlayground extends Component {
-  #component: Component | null = null;
+  #component: ComponentHandle | null = null;
 
   public render() {
     const div = document.createElement("div");
@@ -275,10 +275,10 @@ class VirtualListPlayground extends Component {
 
   create() {
     if (this.#component === null) {
-      this.#component = new VirtualList();
-      renderComponent(this.getNode()?.querySelector(".component-content"), this.#component);
+      const component = new VirtualList();
+      this.#component = renderComponent(this.getNode()?.querySelector(".component-content"), component);
 
-      this.#component.getNode()?.classList.add("playgroundVirtualList");
+      component.getNode()?.classList.add("playgroundVirtualList");
     }
   }
 

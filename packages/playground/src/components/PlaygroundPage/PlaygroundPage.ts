@@ -1,18 +1,20 @@
-import { Component, destroyComponent, renderComponent } from "@pretzeljs/pretzeljs";
+import { Component, destroyComponent, renderComponent, ComponentHandle } from "@pretzeljs/pretzeljs";
 import { jsx } from "nano-jsx";
-import { JSXComponent } from "../JSXComponent";
-import { SimpleComponent } from "../SimpleComponent";
-import { VirtualListPlayground } from "../VirtualList";
+import { FunctionComponent } from "./FunctionComponent";
+import { JSXComponent } from "./JSXComponent";
+import { SimpleComponent } from "./SimpleComponent";
+import { VirtualListPlayground } from "./VirtualList";
 import style from "./PlaygroundPage.module.css"
 
 const PretzelJSPlayGround = {
   "SimpleComponent": SimpleComponent,
   "JSXComponent": JSXComponent,
-  "VirtualList": VirtualListPlayground
+  "VirtualList": VirtualListPlayground,
+  "FunctionComponent": FunctionComponent,
 }
 
 export class PlaygroundPage extends Component {
-  #currentComponent: Component | null = null;
+  #currentComponent: ComponentHandle | null = null;
   #content: HTMLDivElement | null = null;
   #select: HTMLSelectElement | null = null;
 
@@ -24,9 +26,15 @@ export class PlaygroundPage extends Component {
       }
 
       if (this.#content) {
-        this.#currentComponent = new PretzelJSPlayGround[component]();
         this.#content.innerHTML = "";
-        renderComponent(this.#content, this.#currentComponent);
+
+        const componentDefinition = PretzelJSPlayGround[component];
+        // TODO: renderComponent should be able to handle instance or a constructorSim
+        if (componentDefinition.prototype instanceof Component) {
+          this.#currentComponent = renderComponent(this.#content, new componentDefinition());
+        } else if (componentDefinition instanceof Function) {
+          this.#currentComponent = renderComponent(this.#content, componentDefinition);
+        }
       }
     }
   }

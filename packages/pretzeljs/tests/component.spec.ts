@@ -23,11 +23,11 @@ describe('Component tests', () => {
     }
 
     const component = new TestComponent();
-    renderComponent(document.body, component);
+    const handle = renderComponent(document.body, component);
     // there is no DOM api to get event listeners for a node so we have to use an internal method
     expect(component.__getEventHandleCount()).to.equal(1);
 
-    destroyComponent(component);
+    destroyComponent(handle);
     expect(component.__getEventHandleCount()).to.equal(0);
   });
 });
