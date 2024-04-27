@@ -85,7 +85,7 @@ export function renderComponent(parentNode: HTMLElement, component: COMPONENT_TY
   }
 }
 
-function destroyClassComponent(handle: ClassComponentHandle) {
+function destroyClassComponent(handle: ClassComponentHandle, processChildren: boolean) {
   const component = handle.getRef();
 
   const node = component.getNode();
@@ -93,28 +93,27 @@ function destroyClassComponent(handle: ClassComponentHandle) {
     throw new Error("destroyComponent called on component with no domNode.");
   }
 
-  const childComponents = node.querySelectorAll(`[${ID_ATTRIBUTE}]`);
-  childComponents.forEach((childNode) => {
-    const id = childNode.getAttribute(ID_ATTRIBUTE);
+  if (processChildren) {
+    const childComponents = node.querySelectorAll(`[${ID_ATTRIBUTE}]`);
+    childComponents.forEach((childNode) => {
+      const id = childNode.getAttribute(ID_ATTRIBUTE);
 
-    if (!id) {
-      throw new Error("Could not find id attribute on component.");
-    }
+      if (!id) {
+        throw new Error("Could not find id attribute on component.");
+      }
 
-    if (id == component.getId()) {
-      return;
-    }
+      if (id == component.getId()) {
+        return;
+      }
 
-    // TODO: handle errors
-    const childComponent = getComponentById(id);
-    if (childComponent instanceof ClassComponentHandle) {
-      childComponent.getRef().destroy();
-      childComponent.getRef().__cleanup(false);
-    }
-  })
+      // TODO: handle errors
+      const childComponent = getComponentById(id);
+      destroyComponent(childComponent, false);
+    })
+  }
 
   component.destroy();
-  component.__cleanup(true);
+  component.__cleanup(processChildren);
 }
 
 function destroyFunctionComponent(handle: FunctionComponentHandle) {
@@ -129,7 +128,7 @@ function destroyFunctionComponent(handle: FunctionComponentHandle) {
   node.parentNode?.removeChild(node);
 }
 
-export function destroyComponent(handle: ComponentHandle) {
+export function destroyComponent(handle: ComponentHandle, processChildren = true) {
   // get all child components
   const filter: NodeFilter = {
     acceptNode(node: Node): number {
@@ -142,10 +141,50 @@ export function destroyComponent(handle: ComponentHandle) {
   }
 
   if (handle instanceof ClassComponentHandle) {
-    destroyClassComponent(handle);
+    destroyClassComponent(handle, processChildren);
   } else if (handle instanceof FunctionComponentHandle) {
     destroyFunctionComponent(handle);
   }
 
   delete componentHash[handle.getId()];
+}
+
+export type ComponentTreeNode = {
+  id: string;
+  children: ComponentTreeNode[];
+}
+
+export function getComponentTree(node: Element): ComponentTreeNode[] {
+  const childComponents = node.querySelectorAll(`[${ID_ATTRIBUTE}]`);
+  const foundIds = new Set<string>();
+
+  const struct = [];
+
+  childComponents.forEach((childNode) => {
+    const id = childNode.getAttribute(ID_ATTRIBUTE);
+    if (!id) {
+      throw new Error("Could not find id attribute on component.");
+    }
+
+    if (foundIds.has(id)) {
+      return;
+    }
+
+    foundIds.add(id);
+
+    const comp = {
+      id: id,
+      children: []
+    }
+
+    comp.children = getComponentTree(childNode);
+
+    comp.children.forEach((child) => {
+      foundIds.add(child.id);
+    });
+
+    struct.push(comp);
+  });
+
+  return struct;
 }

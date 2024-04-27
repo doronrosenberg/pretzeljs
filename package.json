@@ -22,8 +22,8 @@
   },
   "scripts": {
     "playground": "yarn workspace @pretzeljs/playground dev",
-    "ui:build": "yarn workspace @pretzeljs/pretzeljs build",
-    "ui:test": "yarn workspace @pretzeljs/pretzeljs test"
+    "build": "yarn workspace @pretzeljs/pretzeljs build",
+    "test": "yarn workspace @pretzeljs/pretzeljs test"
   },
   "packageManager": "yarn@4.1.1",
   "volta": {
