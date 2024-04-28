@@ -17,20 +17,22 @@
   },
   "scripts": {
     "build": "vite build",
-    "test": "mocha"
+    "test": "vitest",
+    "coverage": "vitest run --coverage"
   },
   "devDependencies": {
     "@types/chai": "^4.3.0",
     "@types/jsdom": "^16.2.14",
     "@types/mocha": "^10.0.6",
     "@types/node": "^20.12.7",
+    "@vitest/coverage-v8": "^1.5.2",
     "chai": "^4.3.4",
     "jsdom": "^19.0.0",
-    "mocha": "^10.4.0",
     "rollup": "^2.56.1",
     "ts-node": "^10.9.2",
     "vite": "^5.2.8",
-    "vite-plugin-dts": "^3.8.3"
+    "vite-plugin-dts": "^3.8.3",
+    "vitest": "^1.5.2"
   },
   "peerDependencies": {
     "typescript": "*"

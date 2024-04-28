@@ -1,15 +1,14 @@
 // the .js is needed because of ts-node/esm.  Need to find a better way to run these tests.
 import { expect } from "chai";
-import "mocha";
 import * as jsdom from "jsdom";
-import { splitVendorChunkPlugin } from "vite";
+import { describe, test } from "vitest";
 import { Component, destroyComponent, getComponentById, getComponentTree, renderComponent } from "../index";
 
 const { JSDOM } = jsdom;
 const { document } = (new JSDOM("")).window;
 
 describe("Component tests", () => {
-  it("Test event listener cleanup", () => {
+  test("Test event listener cleanup", () => {
     const div = document.createElement("div");
 
     class TestComponent extends Component {
@@ -32,7 +31,7 @@ describe("Component tests", () => {
     expect(component.__getEventHandleCount()).to.equal(0);
   });
 
-  it("Should correctly destroy child components", () => {
+  test("Should correctly destroy child components", () => {
     class TestComponent extends Component {
       render(): HTMLElement {
         const div = document.createElement("div");
@@ -67,7 +66,6 @@ describe("Component tests", () => {
     const handle = renderComponent(parent, component);
 
     const tree = getComponentTree(document.body);
-    console.log(JSON.stringify(tree, null, 2));
     expect(tree.length).to.equal(1);
     expect(tree[0].children.length).to.equal(1);
     expect(tree[0].id).to.include("ParentComponent:");
