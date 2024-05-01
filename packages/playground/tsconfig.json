@@ -8,7 +8,9 @@
       "dom"
     ],
     "moduleResolution": "node",
-    "noEmit": true
-  },
+    "noEmit": true,
+    "paths": {
+      "@pretzeljs/pretzeljs": ["../pretzeljs/src/index.ts"]
+    }},
   "include": ["src"]
 }

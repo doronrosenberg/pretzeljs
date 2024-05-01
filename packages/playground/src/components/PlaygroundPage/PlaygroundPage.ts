@@ -1,4 +1,4 @@
-import { Component, destroyComponent, renderComponent, ComponentHandle } from "@pretzeljs/pretzeljs";
+import { Component, destroyComponent, renderComponent, ComponentHandle, getComponentTree } from "@pretzeljs/pretzeljs";
 import { jsx } from "nano-jsx";
 import { FunctionComponent } from "../FunctionComponent";
 import { JSXComponent } from "../JSXComponent";
@@ -49,6 +49,7 @@ export class PlaygroundPage extends Component {
             })}
           </select>
           <button onClick="${(e: Event) => this.onBuildClick(e)}">Build</button>
+          <button onClick="${(e: Event) => console.log(JSON.stringify(getComponentTree(document.body), null, 2))}">Print Component Tree</button>
         </div>
         <div class="${style.content}" ref="${(el: HTMLDivElement) => this.#content = el}">
           Select a component to render...
