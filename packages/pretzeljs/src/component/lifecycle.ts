@@ -78,7 +78,7 @@ export function renderComponent(parentNode: HTMLElement, component: COMPONENT_TY
     const node = component();
     parentNode.appendChild(node);
 
-    const id = generateId();
+    const id = component.name + ":" + generateId();
     node.setAttribute(ID_ATTRIBUTE, id);
 
     return new FunctionComponentHandle(id, component);

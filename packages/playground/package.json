@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "build": "vite build",
-    "dev": "vite"
+    "dev": "vite serve --mode=development"
   },
   "dependencies": {
     "@pretzeljs/pretzeljs": "0.0.1"

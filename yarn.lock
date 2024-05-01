@@ -411,6 +411,7 @@ __metadata:
     "@vitest/coverage-v8": "npm:^1.5.2"
     chai: "npm:^4.3.4"
     jsdom: "npm:^19.0.0"
+    nano-jsx: "npm:^0.1.0"
     rollup: "npm:^2.56.1"
     ts-node: "npm:^10.9.2"
     vite: "npm:^5.2.8"

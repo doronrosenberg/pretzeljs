@@ -1,6 +1,7 @@
 // the .js is needed because of ts-node/esm.  Need to find a better way to run these tests.
 import { expect } from "chai";
 import * as jsdom from "jsdom";
+import { jsx } from "nano-jsx";
 import { describe, test } from "vitest";
 import { Component, destroyComponent, getComponentById, getComponentTree, renderComponent } from "../index";
 
@@ -84,5 +85,25 @@ describe("Component tests", () => {
 
     const tree2 = getComponentTree(document.body);
     expect(tree2.length).to.equal(0);
+  });
+
+  test("Should correctly destroy function components", () => {
+    globalThis.document = document;
+    function TestFunctionComponent() {
+      return jsx`<div>Test</div>`;
+    }
+
+    const parent = document.createElement("div");
+    document.body.appendChild(parent);
+
+    const handle = renderComponent(parent, TestFunctionComponent);
+
+    let tree = getComponentTree(document.body);
+    expect(tree.length).to.equal(1);
+    expect(tree[0].id).to.include("FunctionComponent:");
+
+    destroyComponent(handle);
+    tree = getComponentTree(document.body);
+    expect(tree.length).to.equal(0);
   });
 });
