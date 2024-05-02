@@ -92,6 +92,8 @@ describe("Component tests", () => {
 
     const tree2 = getComponentTree(document.body);
     expect(tree2.length).to.equal(0);
+    expect(getComponentById(tree[0].id)).to.equal(undefined);
+    expect(getComponentById(tree[0].children[0].id)).to.equal(undefined);
   });
 
   test("Should correctly destroy function components", () => {
@@ -110,7 +112,8 @@ describe("Component tests", () => {
     expect(tree[0].id).to.include("FunctionComponent:");
 
     destroyComponent(handle);
-    tree = getComponentTree(document.body);
-    expect(tree.length).to.equal(0);
+    const tree2 = getComponentTree(document.body);
+    expect(tree2.length).to.equal(0);
+    expect(getComponentById(tree[0].id)).to.equal(undefined);
   });
 });
