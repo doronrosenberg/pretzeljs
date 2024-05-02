@@ -11,9 +11,6 @@
     "emitDeclarationOnly": true,
     "declaration": true
   },
-  "include": [
-    "packages/pretzeljs/src/**/*",
-    "packages/playground/src/**/*"
-  ],
+  "include": ["packages/pretzeljs/src/**/*", "packages/playground/src/**/*"],
   "exclude": ["node_modules"]
 }

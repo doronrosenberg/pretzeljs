@@ -7,7 +7,7 @@ type COMPONENT_TYPES = Component | (() => HTMLElement);
 
 enum ComponentType {
   CLASS,
-  FUNCTION
+  FUNCTION,
 }
 
 export interface ComponentHandle {
@@ -17,7 +17,10 @@ export interface ComponentHandle {
 }
 
 class ClassComponentHandle implements ComponentHandle {
-  constructor(private id: string, private ref: Component) {}
+  constructor(
+    private id: string,
+    private ref: Component,
+  ) {}
 
   getId() {
     return this.id;
@@ -33,7 +36,10 @@ class ClassComponentHandle implements ComponentHandle {
 }
 
 class FunctionComponentHandle implements ComponentHandle {
-  constructor(private id: string, private ref: () => HTMLElement) {}
+  constructor(
+    private id: string,
+    private ref: () => HTMLElement,
+  ) {}
 
   getId() {
     return this.id;
@@ -61,13 +67,19 @@ export function getComponentById(id: string): ComponentHandle {
   return componentHash[id];
 }
 
-export function renderComponent(parentNode: HTMLElement, component: COMPONENT_TYPES): ComponentHandle {
+export function renderComponent(
+  parentNode: HTMLElement,
+  component: COMPONENT_TYPES,
+): ComponentHandle {
   if (component instanceof Component) {
     const node = component.render();
     component.__init(node);
     node.setAttribute(ID_ATTRIBUTE, component.getId());
 
-    componentHash[component.getId()] = new ClassComponentHandle(component.getId(), component);
+    componentHash[component.getId()] = new ClassComponentHandle(
+      component.getId(),
+      component,
+    );
 
     parentNode.appendChild(node);
 
@@ -85,7 +97,10 @@ export function renderComponent(parentNode: HTMLElement, component: COMPONENT_TY
   }
 }
 
-function destroyClassComponent(handle: ClassComponentHandle, processChildren: boolean) {
+function destroyClassComponent(
+  handle: ClassComponentHandle,
+  processChildren: boolean,
+) {
   const component = handle.getRef();
 
   const node = component.getNode();
@@ -109,7 +124,7 @@ function destroyClassComponent(handle: ClassComponentHandle, processChildren: bo
       // TODO: handle errors
       const childComponent = getComponentById(id);
       destroyComponent(childComponent, false);
-    })
+    });
   }
 
   component.destroy();
@@ -117,7 +132,7 @@ function destroyClassComponent(handle: ClassComponentHandle, processChildren: bo
 }
 
 function destroyFunctionComponent(handle: FunctionComponentHandle) {
-  const id = handle.getId()
+  const id = handle.getId();
 
   const node = document.querySelector(`[${ID_ATTRIBUTE}="${id}"]`);
 
@@ -128,7 +143,10 @@ function destroyFunctionComponent(handle: FunctionComponentHandle) {
   node.parentNode?.removeChild(node);
 }
 
-export function destroyComponent(handle: ComponentHandle, processChildren = true) {
+export function destroyComponent(
+  handle: ComponentHandle,
+  processChildren = true,
+) {
   // get all child components
   const filter: NodeFilter = {
     acceptNode(node: Node): number {
@@ -137,8 +155,8 @@ export function destroyComponent(handle: ComponentHandle, processChildren = true
       }
 
       return 0;
-    }
-  }
+    },
+  };
 
   if (handle instanceof ClassComponentHandle) {
     destroyClassComponent(handle, processChildren);
@@ -152,7 +170,7 @@ export function destroyComponent(handle: ComponentHandle, processChildren = true
 export type ComponentTreeNode = {
   id: string;
   children: ComponentTreeNode[];
-}
+};
 
 export function getComponentTree(node: Element): ComponentTreeNode[] {
   const childComponents = node.querySelectorAll(`[${ID_ATTRIBUTE}]`);
@@ -174,8 +192,8 @@ export function getComponentTree(node: Element): ComponentTreeNode[] {
 
     const comp = {
       id: id,
-      children: []
-    }
+      children: [],
+    };
 
     comp.children = getComponentTree(childNode);
 

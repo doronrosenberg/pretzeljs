@@ -3,14 +3,12 @@
   "compilerOptions": {
     "module": "esnext",
     "target": "es2020",
-    "lib": [
-      "es2020",
-      "dom"
-    ],
+    "lib": ["es2020", "dom"],
     "moduleResolution": "node",
     "noEmit": true,
     "paths": {
-      "@pretzeljs/pretzeljs": ["../pretzeljs/src/index.ts"]
-    }},
+      "2@pretzeljs/pretzeljs": ["../pretzeljs/src/index.ts"]
+    }
+  },
   "include": ["src"]
 }

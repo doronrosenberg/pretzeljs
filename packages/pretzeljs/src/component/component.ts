@@ -1,7 +1,7 @@
 /**
  * Class based PretzelJS components.
  */
-import { generateId } from "../utils"
+import { generateId } from "../utils";
 
 class EventHandle {
   domNode: HTMLElement;
@@ -27,8 +27,7 @@ export class Component {
     throw new Error("render() method needs to be implemented.");
   }
 
-  public destroy(): void {
-  }
+  public destroy(): void {}
 
   /**
    * Initializes a component by setting its domNode.
@@ -52,7 +51,7 @@ export class Component {
     // cleanup any managed event listeners.
     this.eventHandles.forEach((handle) => {
       handle.domNode.removeEventListener(handle.type, handle.listener);
-    })
+    });
     this.eventHandles = [];
 
     if (removeFromDOM) {
@@ -84,7 +83,11 @@ export class Component {
    * @param type
    * @param listener
    */
-  public attachListener(node: HTMLElement, type: string, listener: EventListener) {
+  public attachListener(
+    node: HTMLElement,
+    type: string,
+    listener: EventListener,
+  ) {
     node.addEventListener(type, listener, false);
 
     this.eventHandles.push(new EventHandle(node, type, listener));

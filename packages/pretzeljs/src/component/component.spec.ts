@@ -3,10 +3,16 @@ import { expect } from "chai";
 import * as jsdom from "jsdom";
 import { jsx } from "nano-jsx";
 import { describe, test } from "vitest";
-import { Component, destroyComponent, getComponentById, getComponentTree, renderComponent } from "../index";
+import {
+  Component,
+  destroyComponent,
+  getComponentById,
+  getComponentTree,
+  renderComponent,
+} from "../index";
 
 const { JSDOM } = jsdom;
-const { document } = (new JSDOM("")).window;
+const { document } = new JSDOM("").window;
 
 describe("Component tests", () => {
   test("Test event listener cleanup", () => {
@@ -14,8 +20,7 @@ describe("Component tests", () => {
 
     class TestComponent extends Component {
       render(): HTMLElement {
-
-        this.attachListener(div, "click", this.click.bind(this))
+        this.attachListener(div, "click", this.click.bind(this));
 
         return div;
       }
@@ -37,7 +42,7 @@ describe("Component tests", () => {
       render(): HTMLElement {
         const div = document.createElement("div");
         div.appendChild(document.createTextNode("Test"));
-        this.attachListener(div, "click", this.click.bind(this))
+        this.attachListener(div, "click", this.click.bind(this));
         return div;
       }
 
@@ -48,7 +53,7 @@ describe("Component tests", () => {
       render(): HTMLElement {
         const div = document.createElement("div");
         div.appendChild(document.createTextNode("Parent"));
-        this.attachListener(div, "click", this.click.bind(this))
+        this.attachListener(div, "click", this.click.bind(this));
 
         const div2 = document.createElement("div");
         div.appendChild(div2);
@@ -75,7 +80,9 @@ describe("Component tests", () => {
     // there is no DOM api to get event listeners for a node so we have to use an internal method
     expect(component.__getEventHandleCount()).to.equal(1);
 
-    const childComponent = getComponentById(tree[0].children[0].id).getRef() as TestComponent;
+    const childComponent = getComponentById(
+      tree[0].children[0].id,
+    ).getRef() as TestComponent;
     expect(childComponent).instanceof(TestComponent);
     expect(childComponent.__getEventHandleCount()).to.equal(1);
 

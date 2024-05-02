@@ -1,4 +1,9 @@
-import { Component, renderComponent, destroyComponent, ComponentHandle } from '@pretzeljs/pretzeljs';
+import {
+  Component,
+  renderComponent,
+  destroyComponent,
+  ComponentHandle,
+} from "@pretzeljs/pretzeljs";
 
 /**
  * Virtual list widget.
@@ -9,7 +14,8 @@ import { Component, renderComponent, destroyComponent, ComponentHandle } from '@
  */
 
 enum ScrollDirection {
-  DOWN, UP
+  DOWN,
+  UP,
 }
 
 class VirtualList extends Component {
@@ -53,8 +59,12 @@ class VirtualList extends Component {
       this.resizeContainer();
       this.buildPages();
 
-      this.attachListener(this.#viewport, "scroll",  this.scrollEvent.bind(this));
-    }, 0)
+      this.attachListener(
+        this.#viewport,
+        "scroll",
+        this.scrollEvent.bind(this),
+      );
+    }, 0);
 
     return this.#viewport;
   }
@@ -80,7 +90,7 @@ class VirtualList extends Component {
       // TODO: this probably can be smarter, checking if the virtual pages are out of sync?
       this.rebuildPages();
     } else {
-      this.handleSmallScroll(velocity)
+      this.handleSmallScroll(velocity);
     }
 
     this.#scrollLastHandledYOffset = newScrollYOffset;
@@ -112,10 +122,12 @@ class VirtualList extends Component {
 
   private rebuildPages() {
     // calculate where the pages should start from, assuming the user had scrolled normally
-    const start = Math.floor(this.#viewport.scrollTop / this.#pageHeight) * this.#pageHeight;
+    const start =
+      Math.floor(this.#viewport.scrollTop / this.#pageHeight) *
+      this.#pageHeight;
 
     this.#pages.forEach((page, idx) => {
-      page.style.top = start + (idx * this.#pageHeight) + "px";
+      page.style.top = start + idx * this.#pageHeight + "px";
       this.fillInPage(page);
     });
   }
@@ -139,20 +151,20 @@ class VirtualList extends Component {
         // shift the first page out and put it in the end
         this.#pages.push(this.#pages.shift());
 
-        const previousPage = this.#pages[this.#pageCount-2];
-        page.style.top = (previousPage.offsetTop + this.#pageHeight) + "px";
+        const previousPage = this.#pages[this.#pageCount - 2];
+        page.style.top = previousPage.offsetTop + this.#pageHeight + "px";
 
         this.fillInPage(page);
       }
     } else {
-      if (page.offsetTop > (this.#viewport.scrollTop + this.#pageHeight)) {
+      if (page.offsetTop > this.#viewport.scrollTop + this.#pageHeight) {
         wasMoved = true;
 
         // pop the last page out and put it in the start
         this.#pages.unshift(this.#pages.pop());
 
         const previousPage = this.#pages[1];
-        page.style.top = (previousPage.offsetTop - this.#pageHeight) + "px";
+        page.style.top = previousPage.offsetTop - this.#pageHeight + "px";
 
         this.fillInPage(page);
       }
@@ -169,7 +181,8 @@ class VirtualList extends Component {
   }
 
   private fillInPage(pageNode: HTMLElement) {
-    const startIndex = (pageNode.offsetTop / this.#pageHeight) * this.#rowsPerPage;
+    const startIndex =
+      (pageNode.offsetTop / this.#pageHeight) * this.#rowsPerPage;
 
     // row nodes are direct children of the page node
     const children = pageNode.children;
@@ -198,7 +211,7 @@ class VirtualList extends Component {
       this.#container?.appendChild(page);
 
       page.style.height = this.#pageHeight + "px";
-      page.style.top = (i * this.#pageHeight) + "px";
+      page.style.top = i * this.#pageHeight + "px";
 
       this.fillInPage(page);
     }
@@ -261,11 +274,15 @@ class VirtualListPlayground extends Component {
 
     const destroyButton = document.createElement("button");
     destroyButton.innerText = "Destroy Component";
-    this.attachListener(destroyButton, "click", this.destroyComponent.bind(this));
+    this.attachListener(
+      destroyButton,
+      "click",
+      this.destroyComponent.bind(this),
+    );
 
     controlDiv.appendChild(destroyButton);
 
-    div.appendChild(controlDiv)
+    div.appendChild(controlDiv);
 
     const contentDiv = document.createElement("div");
     contentDiv.className = "component-content";
@@ -276,7 +293,10 @@ class VirtualListPlayground extends Component {
   create() {
     if (this.#component === null) {
       const component = new VirtualList();
-      this.#component = renderComponent(this.getNode()?.querySelector(".component-content"), component);
+      this.#component = renderComponent(
+        this.getNode()?.querySelector(".component-content"),
+        component,
+      );
 
       component.getNode()?.classList.add("playgroundVirtualList");
     }
@@ -290,7 +310,4 @@ class VirtualListPlayground extends Component {
   }
 }
 
-export {
-  VirtualList,
-  VirtualListPlayground,
-}
+export { VirtualList, VirtualListPlayground };

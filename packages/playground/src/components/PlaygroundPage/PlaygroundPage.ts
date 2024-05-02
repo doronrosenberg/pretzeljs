@@ -1,17 +1,23 @@
-import { Component, destroyComponent, renderComponent, ComponentHandle, getComponentTree } from "@pretzeljs/pretzeljs";
+import {
+  Component,
+  destroyComponent,
+  renderComponent,
+  ComponentHandle,
+  getComponentTree,
+} from "@pretzeljs/pretzeljs";
 import { jsx } from "nano-jsx";
 import { FunctionComponent } from "../FunctionComponent";
 import { JSXComponent } from "../JSXComponent";
 import { SimpleComponent } from "../SimpleComponent";
 import { VirtualListPlayground } from "../VirtualList";
-import style from "./PlaygroundPage.module.css"
+import style from "./PlaygroundPage.module.css";
 
 const PretzelJSPlayGround = {
-  "SimpleComponent": SimpleComponent,
-  "JSXComponent": JSXComponent,
-  "VirtualList": VirtualListPlayground,
-  "FunctionComponent": FunctionComponent,
-}
+  SimpleComponent: SimpleComponent,
+  JSXComponent: JSXComponent,
+  VirtualList: VirtualListPlayground,
+  FunctionComponent: FunctionComponent,
+};
 
 export class PlaygroundPage extends Component {
   #currentComponent: ComponentHandle | null = null;
@@ -31,9 +37,15 @@ export class PlaygroundPage extends Component {
         const componentDefinition = PretzelJSPlayGround[component];
         // TODO: renderComponent should be able to handle instance or a constructorSim
         if (componentDefinition.prototype instanceof Component) {
-          this.#currentComponent = renderComponent(this.#content, new componentDefinition());
+          this.#currentComponent = renderComponent(
+            this.#content,
+            new componentDefinition(),
+          );
         } else if (componentDefinition instanceof Function) {
-          this.#currentComponent = renderComponent(this.#content, componentDefinition);
+          this.#currentComponent = renderComponent(
+            this.#content,
+            componentDefinition,
+          );
         }
       }
     }
@@ -43,7 +55,7 @@ export class PlaygroundPage extends Component {
     return jsx`
       <div class="${style.container}">
         <div class="${style.controls}">
-          <select ref="${(el: HTMLSelectElement) => this.#select = el}">
+          <select ref="${(el: HTMLSelectElement) => (this.#select = el)}">
             ${Object.keys(PretzelJSPlayGround).map((key) => {
               return jsx`<option value=${key}>${key}</option>`;
             })}
@@ -51,7 +63,7 @@ export class PlaygroundPage extends Component {
           <button onClick="${(e: Event) => this.onBuildClick(e)}">Build</button>
           <button onClick="${(e: Event) => console.log(JSON.stringify(getComponentTree(document.body), null, 2))}">Print Component Tree</button>
         </div>
-        <div class="${style.content}" ref="${(el: HTMLDivElement) => this.#content = el}">
+        <div class="${style.content}" ref="${(el: HTMLDivElement) => (this.#content = el)}">
           Select a component to render...
         </div>
       </div>  
