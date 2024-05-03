@@ -107,7 +107,7 @@ describe("Component tests", () => {
 
     const handle = renderComponent(parent, TestFunctionComponent);
 
-    let tree = getComponentTree(document.body);
+    const tree = getComponentTree(document.body);
     expect(tree.length).to.equal(1);
     expect(tree[0].id).to.include("FunctionComponent:");
 

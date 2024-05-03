@@ -2,6 +2,7 @@
   "name": "@pretzeljs/monorepo",
   "description": "",
   "version": "0.0.1",
+  "type": "module",
   "private": true,
   "workspaces": [
     "packages/*"
@@ -21,14 +22,17 @@
     "@eslint/js": "^9.1.1",
     "eslint": "^9.1.1",
     "eslint-config-prettier": "^9.1.0",
+    "eslint-define-config": "^2.1.0",
     "globals": "^15.1.0",
     "prettier": "3.2.5",
-    "typescript": "^5.4.5"
+    "typescript": "^5.4.5",
+    "typescript-eslint": "^7.8.0"
   },
   "scripts": {
     "playground": "yarn workspace @pretzeljs/playground dev",
     "build": "yarn workspace @pretzeljs/pretzeljs build",
-    "test": "yarn workspace @pretzeljs/pretzeljs test"
+    "test": "yarn workspace @pretzeljs/pretzeljs test",
+    "lint": "eslint"
   },
   "packageManager": "yarn@4.1.1",
   "volta": {
