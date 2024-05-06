@@ -8,7 +8,7 @@
     "dev": "vite serve --mode=development"
   },
   "dependencies": {
-    "@pretzeljs/pretzeljs": "0.0.1"
+    "@pretzeljs/pretzeljs": "workspace:^"
   },
   "devDependencies": {
     "nano-jsx": "^0.1.0",
